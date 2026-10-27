@@ -1,6 +1,7 @@
 
 
 
+
 from vex import *
 import urandom
 import math
@@ -19,7 +20,7 @@ Claw = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
 # wait for rotation sensor to fully initialize
 wait(30, MSEC)
 
-
+'''
 # Make random actually random
 def initializeRandomSeed():
     wait(100, MSEC)
@@ -28,6 +29,7 @@ def initializeRandomSeed():
       
 # Set random seed 
 initializeRandomSeed()
+'''
 
 
 def play_vexcode_sound(sound_name):
@@ -47,7 +49,15 @@ def autonomous():
 
     brain.screen.print("Aitor Suarez")
 
-    Claw_arm.set_velocity(45, PERCENT)
-    Claw_arm.spin_to_position(45, DEGREES)
+    Claw_arm.set_velocity(25, PERCENT)
+    Claw_arm.spin_to_position(490, DEGREES) #Max when starting at bottom
+    Claw_arm.spin_to_position(0, DEGREES)
+    Claw_arm.spin_to_position(490, DEGREES)
+    Claw_arm.spin_to_position(0, DEGREES)
+   
+    Claw.spin_to_position(-200, DEGREES) #Max open
+    Claw.spin_to_position(200, DEGREES)
+    
 
 autonomous()
+
