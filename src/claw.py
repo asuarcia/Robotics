@@ -46,23 +46,22 @@ print("\033[2J")
 #endregion VEXcode Generated Robot Configuration
 
 def autonomous():
-
     brain.screen.print("Aitor Suarez")
-    Claw_arm.set_velocity(25, PERCENT)
-    Claw_arm.spin_to_position(490, DEGREES)
-    Claw_arm.spin_to_position(0, DEGREES)
-
-    drivetrain.drive_for(FORWARD, 45, INCHES)
-    drivetrain.turn_for(LEFT, 115, DEGREES)
-    drivetrain.drive_for(FORWARD, 46, INCHES)
-    Claw_arm.spin_to_position(300, DEGREES)
+    drivetrain.drive_for(FORWARD, 19, INCHES)
     Claw.spin_to_position(-200, DEGREES)
-    Claw.spin_to_position(50, DEGREES)
-
-
-    Claw_arm.spin_to_position(490, DEGREES) #Max when starting at bottom
-   
-    Claw.spin_to_position(-200, DEGREES) #Max open
+    drivetrain.turn_for(LEFT,28, DEGREES)
+    Claw_arm.spin_to_position(145, DEGREES)
+    drivetrain.drive_for(FORWARD, 6.7, INCHES)
+    Claw.spin_to_position(10, DEGREES)
+    Claw_arm.spin_to_position(148, DEGREES)
+    drivetrain.turn_for(95, DEGREES)
+    drive.train.drive_for(FORWARD, 24, INCHES)
+    drivetrain.turn_for(LEFT, 100, DEGREES)
+    drivetrain.drive_for(FORWARD, 10, INCHES)
+    Claw_arm.spin_to_position(135, DEGREES)
+    for i in range 5
+        drivetrain.turn_for(RIGHT, 5, DEGREES)
+        drivetrain.turn_for(LEFT, 5, DEGREES)
 
     
 
