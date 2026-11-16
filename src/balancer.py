@@ -1,31 +1,23 @@
 import vex
 from vex import *
 
-# Setup
-
+#--------------------Setup-----------------------------------------------------------------------------------------------------
 brain = Brain()
-
 left_motor = vex.Motor(vex.Ports.PORT5, vex.GearSetting.RATIO_18_1, False)
 right_motor = vex.Motor(vex.Ports.PORT10, vex.GearSetting.RATIO_18_1, True)
-
 inertial = vex.Inertial(vex.Ports.PORT6)
 
-
-
-# Calibration
+#--------------------Calibration----------------------------------------------------------------------------------------------
 inertial.calibrate()
-
 while inertial.is_calibrating():
     brain.screen.clear_screen()
     brain.screen.set_cursor(1,1)
     brain.screen.print("Inertial Sensor is Calibrating")
     wait(50, MSEC)
 
+#--------------------Measure position----------------------------------------------------------------------------------------
 
-# Measure position
-
-
-def data_collector():
+def data_collector(): # Function for SD card data collection and writing
     brain.timer.clear()
 
     while True:
@@ -35,7 +27,7 @@ def data_collector():
         pitch = inertial.orientation(OrientationType.PITCH, DEGREES)
         yaw = inertial.orientation(OrientationType.YAW, DEGREES)
        
-        line = f"{timer} {roll}, {timer} {pitch}, {timer} {yaw}\n"
+        line = f"{timer}, {roll}, {pitch}, {yaw}\n"
         brain.sdcard.appendfile("data.csv", bytearray(line, "utf-8"))
         
         wait(0.1, SECONDS)
@@ -44,16 +36,23 @@ def data_collector():
             break
 
 
-
-
-if brain.sdcard.is_inserted():
-    line = f"Roll: {roll}, Pitch: {pitch}, Yaw: {yaw}\n"
+if brain.sdcard.is_inserted(): #SD card inserted: Run this
+    line = "Time:, Roll:, Pitch:, Yaw:\n"
     brain.sdcard.savefile("data.csv", bytearray(line, "utf-8"))
     data_collector()
     brain.screen.clear_screen()
+    brain.screen.set_cursor(1,1)
     brain.screen.print("Data collection complete")
-else:
-    brain.screen.print("Insert SD card")
+else: # No SD card: Tether 
+    brain.timer.clear()
+    while True:
+            timer = brain.timer.time(MSEC)
+                
+            print(f"Time: {timer} Roll: {inertial.orientation(OrientationType.ROLL, DEGREES)} Pitch: {inertial.orientation(OrientationType.PITCH, DEGREES)} Yaw: {inertial.orientation(OrientationType.YAW, DEGREES)}")
+        
+            wait(0.1, SECONDS)
 
+            if timer >= 30000:
+                break
 
 
