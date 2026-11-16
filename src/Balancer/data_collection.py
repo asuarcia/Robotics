@@ -1,3 +1,9 @@
+'''
+Roll: Lean forward and back
+Pitch side to side:
+Yaw: Prob up and down
+'''
+
 import vex
 from vex import *
 
@@ -5,16 +11,18 @@ from vex import *
 brain = Brain()
 left_motor = vex.Motor(vex.Ports.PORT5, vex.GearSetting.RATIO_18_1, False)
 right_motor = vex.Motor(vex.Ports.PORT10, vex.GearSetting.RATIO_18_1, True)
-inertial = vex.Inertial(vex.Ports.PORT6)
+inertial = vex.Inertial(vex.Ports.PORT9)
 
 #--------------------Calibration----------------------------------------------------------------------------------------------
 inertial.calibrate()
+wait(10, SECONDS)
+'''
 while inertial.is_calibrating():
     brain.screen.clear_screen()
     brain.screen.set_cursor(1,1)
     brain.screen.print("Inertial Sensor is Calibrating")
     wait(50, MSEC)
-
+'''
 #--------------------Measure position----------------------------------------------------------------------------------------
 
 def data_collector(): # Function for SD card data collection and writing
@@ -27,7 +35,7 @@ def data_collector(): # Function for SD card data collection and writing
         pitch = inertial.orientation(OrientationType.PITCH, DEGREES)
         yaw = inertial.orientation(OrientationType.YAW, DEGREES)
        
-        line = f"{timer}, {roll}, {pitch}, {yaw}\n"
+        line = "{}, {}, {}, {}\n".format(timer, roll, pitch, yaw)
         brain.sdcard.appendfile("data.csv", bytearray(line, "utf-8"))
         
         wait(0.1, SECONDS)
@@ -46,13 +54,18 @@ if brain.sdcard.is_inserted(): #SD card inserted: Run this
 else: # No SD card: Tether 
     brain.timer.clear()
     while True:
+            brain.screen.clear_screen()
+            brain.screen.set_cursor(1,1)
             timer = brain.timer.time(MSEC)
                 
-            print(f"Time: {timer} Roll: {inertial.orientation(OrientationType.ROLL, DEGREES)} Pitch: {inertial.orientation(OrientationType.PITCH, DEGREES)} Yaw: {inertial.orientation(OrientationType.YAW, DEGREES)}")
+            brain.screen.print("Time: {} Roll: {} Pitch: {} Yaw: {}".format(
+    timer,
+    inertial.orientation(OrientationType.ROLL, DEGREES),
+    inertial.orientation(OrientationType.PITCH, DEGREES),
+    inertial.orientation(OrientationType.YAW, DEGREES)
+))
         
             wait(0.1, SECONDS)
 
             if timer >= 30000:
                 break
-
-
