@@ -50,17 +50,16 @@ while True:
     error  = calc_error()
     output = calc_output()
 
-    read_roll()
-    calc_error()
-    calc_output()
+    if output > 12:
+        output = 12
+    elif output < -12:
+        output = -12
 
-    if output >= 40:
-        break
     if abs(roll) >=  35:
+        motor_wheels.stop()
         break
 
-    vex.motor_wheels.spin()
-
+    motor_wheels.spin(FORWARD, output, VOLT)  #Figure out talking to motor group
 
     wait(10, MS)
 
