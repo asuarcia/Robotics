@@ -9,8 +9,9 @@ from vex import *
 
 #--------------------Setup-----------------------------------------------------------------------------------------------------
 brain = Brain()
-left_motor = vex.Motor(vex.Ports.PORT5, vex.GearSetting.RATIO_18_1, False)
-right_motor = vex.Motor(vex.Ports.PORT10, vex.GearSetting.RATIO_18_1, True)
+motor_group_10_motor_a = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False)
+motor_group_10_motor_b = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
+motor_wheels = MotorGroup(motor_group_10_motor_a, motor_group_10_motor_b)
 inertial = vex.Inertial(vex.Ports.PORT9)
 
 #--------------------Calibration----------------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ while inertial.is_calibrating():
 target = 0 #Balance point
 roll = 0
 error = 0
-Kp = 4 # Test for num in volts/degree (to move one degree use x volts)
+Kp = 0.5 # Test for num in volts/degree (to move one degree use x volts)
 output = 0
 
 def read_roll():
@@ -55,11 +56,10 @@ while True:
 
     if output >= 40:
         break
-    if abs(roll) >= 40:
+    if abs(roll) >=  35:
         break
 
-    vex.left_motor.spin(FORWARD, output, VOLT)
-    vex.right_motor.spin
+    vex.motor_wheels.spin()
 
 
     wait(10, MS)

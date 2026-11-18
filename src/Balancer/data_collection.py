@@ -9,9 +9,10 @@ from vex import *
 
 #--------------------Setup-----------------------------------------------------------------------------------------------------
 brain = Brain()
-left_motor = vex.Motor(vex.Ports.PORT5, vex.GearSetting.RATIO_18_1, False)
-right_motor = vex.Motor(vex.Ports.PORT10, vex.GearSetting.RATIO_18_1, True)
-inertial = vex.Inertial(vex.Ports.PORT9)
+motor_group_10_motor_a = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False)
+motor_group_10_motor_b = Motor(Ports.PORT11, GearSetting.RATIO_18_1, False)
+motor_group_10 = MotorGroup(motor_group_10_motor_a, motor_group_10_motor_b)
+Inertial = vex.Inertial(vex.Ports.PORT9)
 
 #--------------------Calibration----------------------------------------------------------------------------------------------
 inertial.calibrate()
