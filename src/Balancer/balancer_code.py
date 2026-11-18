@@ -26,29 +26,45 @@ while inertial.is_calibrating():
 
 # P (Proportion)--------------------------------
 
-def calc_roll():
-    inertial.orientation(OrientationType.ROLL, DEGREES)
+target = 0 #Balance point
+roll = 0
+error = 0
+Kp = 4 # Test for num in volts/degree (to move one degree use x volts)
+output = 0
 
-balance_point = 0
-roll = calc_roll()
-Kp = 67 # Test for num, will be in Volts
-
+def read_roll():
+    roll = inertial.orientation(OrientationType.ROLL, DEGREES)
+    return roll
 
 def calc_error():
-    error = balance_point - roll
+    error = target - roll
+    return error
 
 def calc_output():
     output = Kp * error
+    return output
 
 while True:
-    calc_roll()
+    roll = read_roll()
+    error  = calc_error()
+    output = calc_output()
+
+    read_roll()
     calc_error()
     calc_output()
 
     if output >= 40:
         break
+    if abs(roll) >= 40:
+        break
+
+    vex.left_motor.spin(FORWARD, output, VOLT)
+    vex.right_motor.spin
+
 
     wait(10, MS)
+
+
 
 
 
