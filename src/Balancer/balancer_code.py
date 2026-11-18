@@ -15,17 +15,42 @@ inertial = vex.Inertial(vex.Ports.PORT9)
 
 #--------------------Calibration----------------------------------------------------------------------------------------------
 inertial.calibrate()
-wait(10, SECONDS)
-'''
+
 while inertial.is_calibrating():
     brain.screen.clear_screen()
     brain.screen.set_cursor(1,1)
     brain.screen.print("Inertial Sensor is Calibrating")
     wait(50, MSEC)
-'''
+
 #--------------------Controllers---------------------------------------------------------------------------------------------
 
 # P (Proportion)--------------------------------
+
+def calc_roll():
+    inertial.orientation(OrientationType.ROLL, DEGREES)
+
+balance_point = 0
+roll = calc_roll()
+Kp = 67 # Test for num, will be in Volts
+
+
+def calc_error():
+    error = balance_point - roll
+
+def calc_output():
+    output = Kp * error
+
+while True:
+    calc_roll()
+    calc_error()
+    calc_output()
+
+    if output >= 40:
+        break
+
+    wait(10, MS)
+
+
 
 ''' 
 1. Read ROLL
