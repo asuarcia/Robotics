@@ -39,6 +39,10 @@ def calc_output(error):
     output = Kp * error
     return output
 
+
+
+
+
 while True:
     roll = read_roll()
     error  = target - roll
@@ -56,10 +60,6 @@ while True:
     motor_wheels.spin(FORWARD, output, VOLT)  
 
     wait(10, MSEC)
-
-
-
-
 
 ''' 
 Finding Kp
@@ -86,3 +86,7 @@ Kp is in volts per degree. Think it through: if Kp = 1, how many degrees of tilt
 
 
 '''
+
+
+
+
